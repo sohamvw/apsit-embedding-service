@@ -1,5 +1,5 @@
 fastapi
 uvicorn
-sentence-transformers
+sentence-transformers==2.6.1
+torch==2.2.2
 numpy
-torch==2.2.2+cpu --index-url https://download.pytorch.org/whl/cpu
