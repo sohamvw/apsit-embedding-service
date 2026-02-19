@@ -1,5 +1,7 @@
-fastapi
-uvicorn
+fastapi==0.129.0
+uvicorn==0.41.0
+
 sentence-transformers==2.6.1
 torch==2.2.2
-numpy
+numpy==2.2.6
+scipy==1.15.3
