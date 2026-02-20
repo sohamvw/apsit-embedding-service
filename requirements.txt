@@ -1,8 +1,5 @@
-fastapi==0.129.0
-uvicorn==0.41.0
-
-sentence-transformers==2.6.1
-torch==2.2.2
-
-numpy==1.26.4
-scipy==1.11.4
+fastapi==0.110.0
+uvicorn==0.29.0
+qdrant-client==1.9.1
+cohere==5.3.0
+python-dotenv==1.0.1

@@ -1,36 +1,30 @@
 from fastapi import FastAPI, HTTPException
 from app.schemas import EmbedRequest, EmbedResponse
-from app.model import embed_texts
-import os
+from app.embedding import get_embedding
 
-app = FastAPI(title="APSIT Embedding Service")
-
-
-@app.on_event("startup")
-def startup_event():
-    # Force model load at startup
-    from app.model import load_model
-    load_model()
-
+app = FastAPI(title="APSIT Embedding Service (Cohere)")
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
 
 @app.post("/embed", response_model=EmbedResponse)
 def embed(request: EmbedRequest):
     if not request.texts:
         raise HTTPException(status_code=400, detail="No texts provided")
 
-    embeddings = embed_texts(request.texts)
+    embeddings = []
 
-    # Dimension validation (production safety)
-    for vector in embeddings:
-        if len(vector) != 768:
+    for text in request.texts:
+        vector = get_embedding(text)
+
+        # Validate dimension (Cohere multilingual = 1024)
+        if len(vector) != 1024:
             raise HTTPException(
                 status_code=500,
-                detail="Embedding dimension mismatch"
+                detail="Embedding dimension mismatch (expected 1024)"
             )
+
+        embeddings.append(vector)
 
     return {"embeddings": embeddings}
